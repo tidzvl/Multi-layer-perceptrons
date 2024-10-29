@@ -367,6 +367,10 @@ void Heap<T>::reheapDown(int position) {
 template <class T>
 int Heap<T>::getItem(T item) {
   // YOUR CODE IS HERE
+  for(size_t i = 0; i < this->count; i++){
+    if(aLTb(this->elements[i], item)) return i;
+  }
+  return -1;
 }
 
 template <class T>
