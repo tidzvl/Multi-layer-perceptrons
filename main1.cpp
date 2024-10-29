@@ -5,14 +5,9 @@
  * Author: Võ Tiến
  * Link FB : https://www.facebook.com/Shiba.Vo.Tien
  * Link Group : https://www.facebook.com/groups/khmt.ktmt.cse.bku
- * Date: 17.10.2024
+ * Date: 26.10.2024
 
- ! build code :     g++ -fsanitize=hashress -fsanitize=undefined -std=c++17
-    -o main -Iinclude -Itest -Isrc
-    main.cpp
-    test/unit_test/hash/unit_test.cpp
-    test/unit_test/heap/unit_test.cpp src/hash/hash.cpp src/heap/heap.cpp
- -DTEST_HASH
+ ! build code :  in PDF
 
  * run code
     * terminal unit test array list
@@ -29,6 +24,14 @@ const string TEST_CASE = "HASH";
 // #include "random_test/heap/random_test.hpp"
 #include "unit_test/heap/unit_test.hpp"
 const string TEST_CASE = "HEAP";
+#elif defined(TEST_LAYER)
+// #include "random_test/heap/random_test.hpp"
+#include "unit_test/layer/unit_test.hpp"
+const string TEST_CASE = "LAYER";
+#elif defined(TEST_LOSS)
+// #include "random_test/heap/random_test.hpp"
+#include "unit_test/loss/unit_test.hpp"
+const string TEST_CASE = "LOSS";
 #endif
 void printTestCase();
 
@@ -71,6 +74,42 @@ void handleTestRandom(int argc, char *argv[]) {
 #elif TEST_HEAP
 void handleTestUnit(int argc, char *argv[]) {
   UNIT_TEST_Heap unitTest;
+
+  if (argc == 2 || (argc == 3 && std::string(argv[2]) == "all")) {
+    std::cout << "Running all unit tests array: ----------\n";
+    unitTest.runAllTests();
+  } else if (argc == 3) {
+    std::cout << "Running unit test array: " << argv[2] << " ----------\n";
+    unitTest.runTest(argv[2]);
+  } else {
+    printTestCase();
+  }
+}
+
+void handleTestRandom(int argc, char *argv[]) {
+  // HEAPMIT CODE
+}
+#elif TEST_LAYER
+void handleTestUnit(int argc, char *argv[]) {
+  UNIT_TEST_Layer unitTest;
+
+  if (argc == 2 || (argc == 3 && std::string(argv[2]) == "all")) {
+    std::cout << "Running all unit tests array: ----------\n";
+    unitTest.runAllTests();
+  } else if (argc == 3) {
+    std::cout << "Running unit test array: " << argv[2] << " ----------\n";
+    unitTest.runTest(argv[2]);
+  } else {
+    printTestCase();
+  }
+}
+
+void handleTestRandom(int argc, char *argv[]) {
+  // HEAPMIT CODE
+}
+#elif TEST_LOSS
+void handleTestUnit(int argc, char *argv[]) {
+  UNIT_TEST_Loss unitTest;
 
   if (argc == 2 || (argc == 3 && std::string(argv[2]) == "all")) {
     std::cout << "Running all unit tests array: ----------\n";

@@ -2,7 +2,7 @@
 
 map<string, bool (UNIT_TEST_Heap::*)()> UNIT_TEST_Heap::TESTS;
 
-int maxHeapComparator(int*& lhs, int*& rhs) {
+int(int*& lhs, int*& rhs) {
   if (*lhs < *rhs) {
     return +1;
   } else if (*lhs > *rhs) {
@@ -12,7 +12,7 @@ int maxHeapComparator(int*& lhs, int*& rhs) {
   }
 }
 
-int minHeapComparator(int*& lhs, int*& rhs) {
+int maxHeapComparator(int*& lhs, int*& rhs) {
   if (*lhs < *rhs) {
     return -1;
   } else if (*lhs > *rhs) {
@@ -417,7 +417,7 @@ bool UNIT_TEST_Heap::heap15() {
 bool UNIT_TEST_Heap::heap16() {
   string name = "heap16";
   //! data ------------------------------------
-  Heap<int*> heap(maxHeapComparator, Heap<int*>::free);
+  Heap<int*> heap(minheapcomparator, Heap<int*>::free);
   heap.push(new int(4));
   heap.push(new int(2));
   heap.push(new int(1));
@@ -439,7 +439,7 @@ bool UNIT_TEST_Heap::heap16() {
 bool UNIT_TEST_Heap::heap17() {
   string name = "heap17";
   //! data ------------------------------------
-  Heap<int*> heap(maxHeapComparator, Heap<int*>::free);
+  Heap<int*> heap(minheapcomparator, Heap<int*>::free);
   heap.push(new int(4));
   heap.push(new int(2));
   heap.push(new int(1));
@@ -479,7 +479,7 @@ bool UNIT_TEST_Heap::heap17() {
 bool UNIT_TEST_Heap::heap18() {
   string name = "heap18";
   //! data ------------------------------------
-  Heap<int*> heap(maxHeapComparator, Heap<int*>::free);
+  Heap<int*> heap(minheapcomparator, Heap<int*>::free);
   heap.push(new int(4));
   heap.push(new int(2));
   heap.push(new int(1));
@@ -521,7 +521,7 @@ bool UNIT_TEST_Heap::heap19() {
   string name = "heap19";
   stringstream output;
   //! data ------------------------------------
-  Heap<int*> heap(maxHeapComparator, Heap<int*>::free);
+  Heap<int*> heap(minheapcomparator, Heap<int*>::free);
   heap.push(new int(4));
   heap.push(new int(2));
   heap.push(new int(1));
@@ -564,7 +564,7 @@ bool UNIT_TEST_Heap::heap20() {
   string name = "heap20";
   stringstream output;
   //! data ------------------------------------
-  Heap<int*> heap(maxHeapComparator, Heap<int*>::free);
+  Heap<int*> heap(minheapcomparator, Heap<int*>::free);
   heap.push(new int(4));
   heap.push(new int(2));
   heap.push(new int(1));
@@ -609,7 +609,7 @@ bool UNIT_TEST_Heap::heap20() {
 bool UNIT_TEST_Heap::heap21() {
   string name = "heap21";
   //! data ------------------------------------
-  Heap<int*> heap(minHeapComparator, Heap<int*>::free);
+  Heap<int*> heap(maxHeapComparator, Heap<int*>::free);
   heap.push(new int(4));
   heap.push(new int(2));
   heap.push(new int(1));
@@ -650,7 +650,7 @@ bool UNIT_TEST_Heap::heap21() {
 bool UNIT_TEST_Heap::heap22() {
   string name = "heap22";
   //! data ------------------------------------
-  Heap<int*> heap(minHeapComparator, Heap<int*>::free);
+  Heap<int*> heap(maxHeapComparator, Heap<int*>::free);
   heap.push(new int(4));
   heap.push(new int(2));
   heap.push(new int(1));
@@ -690,7 +690,7 @@ bool UNIT_TEST_Heap::heap22() {
 bool UNIT_TEST_Heap::heap23() {
   string name = "heap23";
   //! data ------------------------------------
-  Heap<int*> heap(minHeapComparator, Heap<int*>::free);
+  Heap<int*> heap(maxHeapComparator, Heap<int*>::free);
   heap.push(new int(4));
   heap.push(new int(2));
   heap.push(new int(1));
@@ -728,7 +728,7 @@ bool UNIT_TEST_Heap::heap23() {
 bool UNIT_TEST_Heap::heap24() {
   string name = "heap24";
   //! data ------------------------------------
-  Heap<int*> heap(minHeapComparator, Heap<int*>::free);
+  Heap<int*> heap(maxHeapComparator, Heap<int*>::free);
   heap.push(new int(4));
   heap.push(new int(2));
   heap.push(new int(1));
@@ -839,7 +839,7 @@ bool UNIT_TEST_Heap::heap28() {
                   new int(12), new int(6),  new int(11), new int(10),
                   new int(7),  new int(14), new int(2),  new int(13),
                   new int(17), new int(18), new int(19), new int(16)};
-  Heap<int*> heap(maxHeapComparator, Heap<int*>::free);
+  Heap<int*> heap(minheapcomparator, Heap<int*>::free);
   heap.heapify(array, 20);
 
   //! expect ----------------------------------
@@ -861,7 +861,7 @@ bool UNIT_TEST_Heap::heap29() {
   string name = "heap29";
   //! data ------------------------------------
   int* array[] = {};
-  Heap<int*> heap(maxHeapComparator, Heap<int*>::free);
+  Heap<int*> heap(minheapcomparator, Heap<int*>::free);
   heap.heapify(array, 0);
 
   //! expect ----------------------------------
@@ -886,7 +886,7 @@ bool UNIT_TEST_Heap::heap30() {
                   new int(12), new int(6),  new int(11), new int(10),
                   new int(7),  new int(14), new int(2),  new int(13),
                   new int(17), new int(18), new int(19), new int(16)};
-  Heap<int*> heap(minHeapComparator, Heap<int*>::free);
+  Heap<int*> heap(maxHeapComparator, Heap<int*>::free);
   heap.heapify(array, 20);
 
   //! expect ----------------------------------

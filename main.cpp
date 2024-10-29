@@ -21,57 +21,38 @@
 */
 
 #include "main.hpp"
-#include "F:\DSA2\ASS2\template\test\unit_test\hash\unit_test.cpp"
-#include "F:\DSA2\ASS2\template\test\unit_test\hash\unit_test.hpp"
-#include "F:\DSA2\ASS2\Multi-layer-perceptrons\test\unit_test\heap\unit_test.hpp"
-#include "F:\DSA2\ASS2\template\include\list\DLinkedList.h"
-#include "F:\DSA2\ASS2\template\include\list\XArrayList.h"
-#ifdef TEST_HASH
-// #include "random_test/hash/random_test.hpp"
-#include "unit_test/hash/unit_test.hpp"
-const string TEST_CASE = "HASH";
-#elif defined(TEST_HEAP)
-// #include "random_test/heap/random_test.hpp"
-#include "unit_test/heap/unit_test.hpp"
-const string TEST_CASE = "HEAP";
-#endif
-void printTestCase();
+// #include "F:\DSA2\ASS2\template\test\unit_test\hash\unit_test.cpp"
+// #include "F:\DSA2\ASS2\template\test\unit_test\hash\unit_test.hpp"
+// #include "F:\DSA2\ASS2\Multi-layer-perceptrons\test\unit_test\heap\unit_test.hpp"
+#include "F:\DSA2\ASS2\Multi-layer-perceptrons\include\list\DLinkedList.h"
+#include "F:\DSA2\ASS2\Multi-layer-perceptrons\include\list\XArrayList.h"
+#include "F:\DSA2\ASS2\Multi-layer-perceptrons\test\unit_test\layer\unit_test_relu.cpp"
+// #include "F:\DSA2\ASS2\Multi-layer-perceptrons\include\ann\layer\ReLU.h"
+// #include "F:\DSA2\ASS2\Multi-layer-perceptrons\include\ann\layer\ILayer.h"
 
 int main(int argc, char *argv[]) {
-  string name = "heap13";
-  //! data ------------------------------------
-  Heap<int> heap;
-  heap.push(4);
-  heap.push(2);
-  heap.push(1);
-  heap.push(7);
-  heap.push(3);
-  heap.push(9);
-  heap.push(10);
-  heap.push(6);
-  heap.push(8);
-  heap.push(5);
-  heap.push(12);
-  heap.push(11);
-  heap.push(14);
-  heap.push(13);
-  heap.push(15);
+  string name = "layer01";
+  ReLU layer;
+  stringstream output, expect;
 
-  heap.remove(11);
-  heap.remove(20);
-  heap.remove(15);
+  //! data ------------------------------------
+  xt::xarray<double> X = {{-1.0, 0.0}, {0.0, 1.0}};
+  xt::xarray<double> DY = {{0.1, 0.2}, {0.0, 1.1}};
+
+  xt::xarray<double> output_forward = layer.forward(X);
+  xt::xarray<double> output_backward = layer.backward(DY);
 
   //! expect ----------------------------------
-  string expect = "size=13;empty=0;[1,3,2,6,4,9,10,7,8,5,12,13,14]";
+  xt::xarray<double> expect_forward = {{0., 0.}, {0., 1.}};
+  xt::xarray<double> expect_backward = {{0., 0.2}, {0., 1.1}};
+  expect << expect_forward << endl << expect_backward;
 
   //! output ----------------------------------
-  stringstream output;
-  output << "size=" << heap.size() << ";empty=" << heap.empty() << ";"
-         << heap.toString();
+  output << output_forward << endl << output_backward;
 
   //output
-  cout<< "output : " << output.str() << endl;
-  cout << "expect : " << expect << endl;
+  std::cout << "output : " << output.str() << endl;
+  std::cout << "expect : " << expect << endl;
   if(expect == output.str()) {
     cout << "test " + name + " --------------- PASS" <<"\n";
   } else {
@@ -79,51 +60,4 @@ int main(int argc, char *argv[]) {
   }
 }
 
-#ifdef TEST_HASH
-void handleTestUnit(int argc, char *argv[]) {
-  UNIT_TEST_Hash unitTest;
-
-  if (argc == 2 || (argc == 3 && std::string(argv[2]) == "all")) {
-    unitTest.runAllTests();
-  } else if (argc == 3) {
-    unitTest.runTest(argv[2]);
-  } else {
-    printTestCase();
-  }
-}
-
-void handleTestRandom(int argc, char *argv[]) {
-  // HEAPMIT CODE
-}
-#elif TEST_HEAP
-void handleTestUnit(int argc, char *argv[]) {
-  UNIT_TEST_Heap unitTest;
-
-  if (argc == 2 || (argc == 3 && std::string(argv[2]) == "all")) {
-    std::cout << "Running all unit tests array: ----------\n";
-    unitTest.runAllTests();
-  } else if (argc == 3) {
-    std::cout << "Running unit test array: " << argv[2] << " ----------\n";
-    unitTest.runTest(argv[2]);
-  } else {
-    printTestCase();
-  }
-}
-
-void handleTestRandom(int argc, char *argv[]) {
-  // HEAPMIT CODE
-}
-#endif
-
-void printTestCase() {
-  std::cout << GREEN << BOLD << "terminal unit test" << RESET << std::endl;
-  std::cout << RED << "./main test_unit" << RESET << std::endl;
-  std::cout << RED << "./main test_unit nameFunctionUnitTest" << RESET
-            << std::endl
-            << std::endl;
-
-  // std::cout << GREEN << BOLD << "terminal auto test" << RESET << std::endl;
-  // std::cout << RED << "./main test_random number_1 number_2" << RESET
-  //           << std::endl;
-  // std::cout << RED << "./main test_random number" << RESET << std::endl;
-}
+// g++ -std=c++17 -I "./test" -I "./include" -I "./include/tensor" -I "./include/sformat" -I "./ include/ann" -I "./demo" $(find ./src/ann/ -type f -iregex ".*\.cpp") ./src/tensor/*.cpp main.cpp test/unit_test/layer/unit_test_relu.cpp -o main -DTEST_LAYER

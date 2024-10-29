@@ -6,10 +6,11 @@ if [ -f main ]; then
     rm main
 fi
 
-# Compile the C++ program
-g++ -fsanitize=address -fsanitize=undefined -std=c++17 \
-    -o main -Iinclude -Itest -Isrc \
-    main.cpp \
-    test/unit_test/hash/unit_test.cpp test/unit_test/heap/unit_test.cpp \
-    -DTEST_HASH
-
+# Compile the C++ program  -fsanitize=undefined 
+g++ -std=c++17 -o main -DTEST_LOSS 
+-I "./test"  -I "./include" 
+-I "./include/tensor" -I "./include/sformat" 
+-I "./include/ann" 
+$(find ./src/ann/ -type f -iregex ".*\.cpp")  
+./src/tensor/*.cpp main.cpp  
+test/unit_test/loss/unit_test_CrossEntropy.cpp
