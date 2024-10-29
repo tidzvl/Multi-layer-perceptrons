@@ -7,10 +7,70 @@ class UNIT_TEST_Heap {
  public:
   UNIT_TEST_Heap() {
     // TODO unit test new
+    registerTest("heap01", &UNIT_TEST_Heap::heap01);
+    registerTest("heap02", &UNIT_TEST_Heap::heap02);
+    registerTest("heap03", &UNIT_TEST_Heap::heap03);
+    registerTest("heap04", &UNIT_TEST_Heap::heap04);
+    registerTest("heap05", &UNIT_TEST_Heap::heap05);
+    registerTest("heap06", &UNIT_TEST_Heap::heap06);
+    registerTest("heap07", &UNIT_TEST_Heap::heap07);
+    registerTest("heap08", &UNIT_TEST_Heap::heap08);
+    registerTest("heap09", &UNIT_TEST_Heap::heap09);
+    registerTest("heap10", &UNIT_TEST_Heap::heap10);
+    registerTest("heap11", &UNIT_TEST_Heap::heap11);
+    registerTest("heap12", &UNIT_TEST_Heap::heap12);
+    registerTest("heap13", &UNIT_TEST_Heap::heap13);
+    registerTest("heap14", &UNIT_TEST_Heap::heap14);
+    registerTest("heap15", &UNIT_TEST_Heap::heap15);
+    registerTest("heap16", &UNIT_TEST_Heap::heap16);
+    registerTest("heap17", &UNIT_TEST_Heap::heap17);
+    registerTest("heap18", &UNIT_TEST_Heap::heap18);
+    registerTest("heap19", &UNIT_TEST_Heap::heap19);
+    registerTest("heap20", &UNIT_TEST_Heap::heap20);
+    registerTest("heap21", &UNIT_TEST_Heap::heap21);
+    registerTest("heap22", &UNIT_TEST_Heap::heap22);
+    registerTest("heap23", &UNIT_TEST_Heap::heap23);
+    registerTest("heap24", &UNIT_TEST_Heap::heap24);
+    registerTest("heap25", &UNIT_TEST_Heap::heap25);
+    registerTest("heap26", &UNIT_TEST_Heap::heap26);
+    registerTest("heap27", &UNIT_TEST_Heap::heap27);
+    registerTest("heap28", &UNIT_TEST_Heap::heap28);
+    registerTest("heap29", &UNIT_TEST_Heap::heap29);
+    registerTest("heap30", &UNIT_TEST_Heap::heap30);
   }
 
  private:
   // TODO unit test new
+  bool heap01();
+  bool heap02();
+  bool heap03();
+  bool heap04();
+  bool heap05();
+  bool heap06();
+  bool heap07();
+  bool heap08();
+  bool heap09();
+  bool heap10();
+  bool heap11();
+  bool heap12();
+  bool heap13();
+  bool heap14();
+  bool heap15();
+  bool heap16();
+  bool heap17();
+  bool heap18();
+  bool heap19();
+  bool heap20();
+  bool heap21();
+  bool heap22();
+  bool heap23();
+  bool heap24();
+  bool heap25();
+  bool heap26();
+  bool heap27();
+  bool heap28();
+  bool heap29();
+  bool heap30();
 
  public:
   static map<string, bool (UNIT_TEST_Heap::*)()> TESTS;

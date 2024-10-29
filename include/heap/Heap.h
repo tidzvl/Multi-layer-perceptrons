@@ -163,26 +163,38 @@ class Heap : public IHeap<T> {
 template <class T>
 Heap<T>::Heap(int (*comparator)(T&, T&), void (*deleteUserData)(Heap<T>*)) {
   // YOUR CODE IS HERE
+  this->capacity = 10;
+  this->count = 0;
+  this->elements = new T[this->capacity];
+  this->comparator = comparator;
 }
 template <class T>
 Heap<T>::Heap(const Heap<T>& heap) {
   // YOUR CODE IS HERE
+  removeInternalData();
+  copyFrom(heap);
 }
 
 template <class T>
 Heap<T>& Heap<T>::operator=(const Heap<T>& heap) {
   // YOUR CODE IS HERE
+  copyFrom(heap);
   return *this;
 }
 
 template <class T>
 Heap<T>::~Heap() {
   // YOUR CODE IS HERE
+  this->removeInternalData();
 }
 
 template <class T>
 void Heap<T>::push(T item) {  // item  = 25
   // YOUR CODE IS HERE
+  this->ensureCapacity(this->count + 1);
+  this->elements[this->count] = item;
+  this->reheapUp(this->count);
+  this->count++;
 }
 /*
       18
@@ -203,6 +215,12 @@ void Heap<T>::push(T item) {  // item  = 25
 template <class T>
 T Heap<T>::pop() {
   // YOUR CODE IS HERE
+  if(this->count == 0) throw std::out_of_range("Calling to peek withthe empty heap.");
+  T item = this->elements[0];
+  this->elements[0] = this->elements[this->count - 1];
+  this->count--;
+  this->reheapDown(0);
+  return item;
 }
 
 /*
@@ -219,36 +237,54 @@ T Heap<T>::pop() {
 template <class T>
 const T Heap<T>::peek() {
   // YOUR CODE IS HERE
+  if(this->count == 0) throw std::out_of_range("Calling to peek withthe empty heap.");
+  return this->elements[0];
 }
 
 template <class T>
 void Heap<T>::remove(T item, void (*removeItemData)(T)) {
   // YOUR CODE IS HERE
+  int index = this->getItem(item);
+  if(index == -1) return;
+  if(removeItemData != 0) removeItemData(item);
+  this->elements[index] = this->elements[this->count - 1];
+  this->count--;
+  this->reheapDown(index);
 }
 
 template <class T>
 bool Heap<T>::contains(T item) {
   // YOUR CODE IS HERE
+  return this->getItem(item) != -1;
 }
 
 template <class T>
 int Heap<T>::size() {
   // YOUR CODE IS HERE
+  return this->count;
 }
 
 template <class T>
 void Heap<T>::heapify(T array[], int size) {
   // YOUR CODE IS HERE
+  for(size_t i = 0; i < size; i++){
+    this->push(array[i]);
+  }
 }
 
 template <class T>
 void Heap<T>::clear() {
   // YOUR CODE IS HERE
+  this->removeInternalData();
+  this->capacity = 10;
+  this->count = 0;
+  this->elements = new T[this->capacity];
 }
 
 template <class T>
 bool Heap<T>::empty() {
   // YOUR CODE IS HERE
+  return this->count == 0;
 }
 
 template <class T>
@@ -301,11 +337,31 @@ void Heap<T>::swap(int a, int b) {
 template <class T>
 void Heap<T>::reheapUp(int position) {
   // YOUR CODE IS HERE
+  int onggia = (position - 1) / 2;
+  while(onggia > 0 && this->comparator(this->elements[onggia], this->elements[position]) > 0){
+    this->swap(this->elements[onggia], this->elements[position]);
+    position = onggia;
+    onggia = (position - 1) / 2;
+  }
 }
 
 template <class T>
 void Heap<T>::reheapDown(int position) {
   // YOUR CODE IS HERE
+  int contrai = 2*position + 1;
+  int congai = 2*position + 2;
+  int onggia = position;
+  while(contrai < this->count){
+    if(this->comparator(this->elements[contrai], this->elements[onggia]) > 0) onggia = contrai;
+    if(congai < this->count && (this->comparator(this->elements[congai], this->elements[contrai]) > 0 
+                            || this->comparator(this->elements[congai], this->elements[onggia]) >0)) onggia = congai;
+    if(onggia == position) break;
+    this->swap(this->elements[onggia], this->elements[position]);
+    position = onggia;
+    contrai = 2*position + 1;
+    congai = 2*position + 2;
+    onggia = position;
+  }
 }
 
 template <class T>
