@@ -12,8 +12,8 @@
 
 #ifndef RELU_H
 #define RELU_H
-// #include "layer/ILayer.h"
-#include "F:\DSA2\ASS2\Multi-layer-perceptrons\include\ann\layer\ILayer.h"
+#include "layer/ILayer.h"
+// #include "F:\DSA2\ASS2\Multi-layer-perceptrons\include\ann\layer\ILayer.h"
 
 class ReLU: public ILayer {
 public:

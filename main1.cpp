@@ -36,23 +36,24 @@ const string TEST_CASE = "LOSS";
 void printTestCase();
 
 int main(int argc, char *argv[]) {
-  if (argc <= 1) {
-    printTestCase();
-    return 1;
-  }
+  // if (argc <= 1) {
+  //   printTestCase();
+  //   return 1;
+  // }
 
-  std::string arg1 = argv[1];
-  if (arg1 == "test_unit") {
-    std::cout << GREEN << BOLD << "Running unit_test/" << TEST_CASE << RESET
-              << "\n";
-    handleTestUnit(argc, argv);
-  } else if (arg1 == "test_random") {
-    std::cout << GREEN << BOLD << "Running test_random/" << TEST_CASE << RESET
-              << "\n";
-    handleTestRandom(argc, argv);
-  } else {
-    printTestCase();
-  }
+  // std::string arg1 = argv[1];
+  // if (arg1 == "test_unit") {
+  //   std::cout << GREEN << BOLD << "Running unit_test/" << TEST_CASE << RESET
+  //             << "\n";
+  //   handleTestUnit(argc, argv);
+  // } else if (arg1 == "test_random") {
+  //   std::cout << GREEN << BOLD << "Running test_random/" << TEST_CASE << RESET
+  //             << "\n";
+  //   handleTestRandom(argc, argv);
+  // } else {
+  //   printTestCase();
+  // }
+  
 }
 
 #ifdef TEST_HASH
