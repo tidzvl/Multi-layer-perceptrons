@@ -21,9 +21,7 @@ public:
     ReLU(const ReLU& orig);
     virtual ~ReLU();
     
-    xt::xarray<double> forward(xt::xarray<double> X){
-        
-    }
+    xt::xarray<double> forward(xt::xarray<double> X);
     xt::xarray<double> backward(xt::xarray<double> DY);
     string get_desc();
     LayerType get_type(){ return LayerType::RELU; };

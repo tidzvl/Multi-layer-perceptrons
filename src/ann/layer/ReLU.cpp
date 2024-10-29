@@ -29,11 +29,12 @@ ReLU::ReLU(const ReLU& orig) { m_sName = "ReLU_" + to_string(++m_unLayer_idx); }
 ReLU::~ReLU() {}
 
 xt::xarray<double> ReLU::forward(xt::xarray<double> X) {
-  // Todo CODE YOUR
-  return xt::where(m_aMask, X, 0.0);
+  m_aMask = X >= 0;
+  return xt::maximum(0.0, X);
 }
 xt::xarray<double> ReLU::backward(xt::xarray<double> DY) {
   // Todo CODE YOUR
+  return DY*xt::where(m_aMask, 1.0, 0.0);
 }
 
 string ReLU::get_desc() {

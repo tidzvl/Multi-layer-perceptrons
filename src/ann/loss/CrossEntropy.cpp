@@ -24,7 +24,15 @@ CrossEntropy::~CrossEntropy() {}
 
 double CrossEntropy::forward(xt::xarray<double> X, xt::xarray<double> t) {
   // Todo CODE YOUR
+  int N = X.shape()[0];
+  m_aYtarget = t;
+  m_aCached_Ypred = X;
+  xt::xarray<double> logYpred = xt::log(m_aCached_Ypred + 1e-7);
+  xt::xarray<double> loss = xt::sum(-m_aYtarget * logYpred, -1)/N;
+  return loss[0];
 }
 xt::xarray<double> CrossEntropy::backward() {
   // Todo CODE YOUR
+  int N = m_aCached_Ypred.shape()[0];
+  return (-m_aYtarget / (m_aCached_Ypred+ 1e-7))/N;
 }

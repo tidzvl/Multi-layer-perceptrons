@@ -33,10 +33,17 @@ Softmax::~Softmax() {}
 
 xt::xarray<double> Softmax::forward(xt::xarray<double> X) {
   // Todo CODE YOUR
+  xt::xarray<double> expX = xt::exp(X);
+  xt::xarray<double> sumExpX = xt::sum(expX, m_nAxis);
+  m_aCached_Y = expX / sumExpX;
+  return m_aCached_Y;
 }
 
 xt::xarray<double> Softmax::backward(xt::xarray<double> DY) {
   // Todo CODE YOUR
+  xt::xarray<double> gradient = DY * m_aCached_Y;
+  xt::xarray<double> sumGradient = xt::sum(gradient, m_nAxis);
+  return gradient - m_aCached_Y * sumGradient;
 }
 
 string Softmax::get_desc() {
