@@ -193,6 +193,8 @@ void Heap<T>::push(T item) {  // item  = 25
   // YOUR CODE IS HERE
   this->ensureCapacity(this->count + 1);
   this->elements[this->count] = item;
+  // cout << "add " << item << endl;
+  // cout << "reheapup " << this->count << endl;
   this->reheapUp(this->count);
   this->count++;
 }
@@ -215,7 +217,7 @@ void Heap<T>::push(T item) {  // item  = 25
 template <class T>
 T Heap<T>::pop() {
   // YOUR CODE IS HERE
-  if(this->count == 0) throw std::out_of_range("Calling to peek withthe empty heap.");
+  if(this->count == 0) throw std::underflow_error("Calling peek with an empty heap.");
   T item = this->elements[0];
   this->elements[0] = this->elements[this->count - 1];
   this->count--;
@@ -237,7 +239,7 @@ T Heap<T>::pop() {
 template <class T>
 const T Heap<T>::peek() {
   // YOUR CODE IS HERE
-  if(this->count == 0) throw std::out_of_range("Calling to peek withthe empty heap.");
+  if(this->count == 0) throw std::underflow_error("Calling peek with an empty heap.");
   return this->elements[0];
 }
 
@@ -337,11 +339,12 @@ void Heap<T>::swap(int a, int b) {
 template <class T>
 void Heap<T>::reheapUp(int position) {
   // YOUR CODE IS HERE
-  int onggia = (position - 1) / 2;
-  while(onggia > 0 && this->comparator(this->elements[onggia], this->elements[position]) > 0){
-    this->swap(this->elements[onggia], this->elements[position]);
-    position = onggia;
-    onggia = (position - 1) / 2;
+  while(position>0){
+    int onggia = (position - 1) / 2;
+    if(this->compare(this->elements[onggia], this->elements[position])>0){
+      this->swap(position, onggia);
+      position = onggia;
+    }else break;
   }
 }
 
@@ -352,11 +355,11 @@ void Heap<T>::reheapDown(int position) {
   int congai = 2*position + 2;
   int onggia = position;
   while(contrai < this->count){
-    if(this->comparator(this->elements[contrai], this->elements[onggia]) > 0) onggia = contrai;
-    if(congai < this->count && (this->comparator(this->elements[congai], this->elements[contrai]) > 0 
-                            || this->comparator(this->elements[congai], this->elements[onggia]) >0)) onggia = congai;
+    if(this->compare(this->elements[onggia], this->elements[contrai]) > 0) onggia = contrai;
+    if(congai < this->count && (this->compare(this->elements[contrai], this->elements[congai]) > 0 
+                            || this->compare(this->elements[onggia], this->elements[congai]) >0)) onggia = congai;
     if(onggia == position) break;
-    this->swap(this->elements[onggia], this->elements[position]);
+    this->swap(onggia, position);
     position = onggia;
     contrai = 2*position + 1;
     congai = 2*position + 2;
@@ -368,7 +371,7 @@ template <class T>
 int Heap<T>::getItem(T item) {
   // YOUR CODE IS HERE
   for(size_t i = 0; i < this->count; i++){
-    if(aLTb(this->elements[i], item)) return i;
+    if(compare(this->elements[i], item) == 0) return i;
   }
   return -1;
 }
@@ -389,7 +392,7 @@ void Heap<T>::copyFrom(const Heap<T>& heap) {
   this->deleteUserData = heap.deleteUserData;
 
   // Copy items from heap:
-  for (int idx = 0; idx < heap.size(); idx++) {
+  for (int idx = 0; idx < heap.count; idx++) {
     this->elements[idx] = heap.elements[idx];
   }
 }
