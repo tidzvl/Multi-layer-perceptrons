@@ -378,7 +378,7 @@ DLinkedList<T> &DLinkedList<T>::operator=(const DLinkedList<T> &list)
         tail = nullptr;
         Node* current = list.head;
         while (current) {
-            push_back(current->data);
+            add(current->data);
             current = current->next;
         }
     }

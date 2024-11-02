@@ -37,6 +37,26 @@ class UNIT_TEST_Heap {
     registerTest("heap28", &UNIT_TEST_Heap::heap28);
     registerTest("heap29", &UNIT_TEST_Heap::heap29);
     registerTest("heap30", &UNIT_TEST_Heap::heap30);
+    registerTest("heap31", &UNIT_TEST_Heap::heap31);
+    registerTest("heap32", &UNIT_TEST_Heap::heap32);
+    registerTest("heap33", &UNIT_TEST_Heap::heap33);
+    registerTest("heap34", &UNIT_TEST_Heap::heap34);
+    registerTest("heap35", &UNIT_TEST_Heap::heap35);
+    registerTest("heap36", &UNIT_TEST_Heap::heap36);
+    registerTest("heap37", &UNIT_TEST_Heap::heap37);
+    registerTest("heap38", &UNIT_TEST_Heap::heap38);
+    registerTest("heap39", &UNIT_TEST_Heap::heap39);
+    registerTest("heap40", &UNIT_TEST_Heap::heap40);
+    registerTest("heap41", &UNIT_TEST_Heap::heap41);
+    registerTest("heap42", &UNIT_TEST_Heap::heap42);
+    registerTest("heap43", &UNIT_TEST_Heap::heap43);
+    registerTest("heap44", &UNIT_TEST_Heap::heap44);
+    registerTest("heap45", &UNIT_TEST_Heap::heap45);
+    registerTest("heap46", &UNIT_TEST_Heap::heap46);
+    registerTest("heap47", &UNIT_TEST_Heap::heap47);
+    registerTest("heap48", &UNIT_TEST_Heap::heap48);
+    registerTest("heap49", &UNIT_TEST_Heap::heap49);
+    registerTest("heap50", &UNIT_TEST_Heap::heap50);
   }
 
  private:
@@ -71,6 +91,26 @@ class UNIT_TEST_Heap {
   bool heap28();
   bool heap29();
   bool heap30();
+  bool heap31();
+  bool heap32();
+  bool heap33();
+  bool heap34();
+  bool heap35();
+  bool heap36();
+  bool heap37();
+  bool heap38();
+  bool heap39();
+  bool heap40();
+  bool heap41();
+  bool heap42();
+  bool heap43();
+  bool heap44();
+  bool heap45();
+  bool heap46();
+  bool heap47();
+  bool heap48();
+  bool heap49();
+  bool heap50();
 
  public:
   static map<string, bool (UNIT_TEST_Heap::*)()> TESTS;

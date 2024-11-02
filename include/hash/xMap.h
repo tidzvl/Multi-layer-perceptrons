@@ -356,9 +356,11 @@ bool xMap<K, V>::containsValue(V value) {
   // TODO YOUR CODE IS HERE
   for(size_t i = 0; i < capacity; i++) {
     DLinkedList<Entry*> &list = this->table[i];
-    for (auto pEntry : list) {
-      if (valueEQ(pEntry->value, value)) {
-        return true;
+    if(!list.empty()) {
+      for (auto pEntry : list) {
+        if (valueEQ(pEntry->value, value)) {
+          return true;
+        }
       }
     }
   }
@@ -540,16 +542,16 @@ void xMap<K, V>::rehash(int newCapacity) {
 template <class K, class V>
 void xMap<K, V>::removeInternalData() {
   // Remove user's data
-  if (deleteKeys != 0) deleteKeys(this);
   // cout << this->capacity << endl;
-  if (deleteValues != 0) deleteValues(this);
   // Remove all entries in the current map
   for (int idx = 0; idx < this->capacity; idx++) {
     DLinkedList<Entry*>& list = this->table[idx];
     for (auto pEntry : list) delete pEntry;
     list.clear();
   }
+  if (deleteKeys != 0) deleteKeys(this);
 
+  if (deleteValues != 0) deleteValues(this);
   // Remove table
   delete[] table;
 }
@@ -567,23 +569,29 @@ void xMap<K, V>::copyMapFrom(const xMap<K, V>& map) {
   //! removeInternalData(); ???
 
 
-  this->capacity = map.capacity;
-  this->count = 0;
-  this->table = new DLinkedList<Entry*>[capacity];
-
-  this->hashCode = map.hashCode;
+  // this->capacity = map.capacity;
+  this->capacity = 10;
   this->loadFactor = map.loadFactor;
-
+  this->count = 0;
+  this->hashCode = map.hashCode;
   this->keyEqual = map.keyEqual;
+  // cout << "---Before coppy---" << endl;
+  // cout << "this " << this->capacity << endl;
+  // cout << "map " << map.capacity << endl;
+  
+  this->table = new DLinkedList<Entry*>[this->capacity];
   // SHOULD NOT COPY: deleteKeys, deleteValues => delete ONLY TIME in map if
   // needed
-
   // copy entries
   for (int idx = 0; idx < map.capacity; idx++) {
     DLinkedList<Entry*>& list = map.table[idx];
     for (auto pEntry : list) {
       this->put(pEntry->key, pEntry->value);
+      // cout << this->capacity << endl;
     }
   }
+  // cout << "---after coppy---" << endl;
+  // cout << "this " << this->capacity << endl;
+  // cout << "map " << map.capacity << endl;
 }
 #endif /* XMAP_H */

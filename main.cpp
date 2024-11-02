@@ -16,7 +16,7 @@
 */
 
 #include "main.hpp"
-#include "test\unit_test\layer\unit_test_relu.cpp"
+#include "test\unit_test\heap\unit_test.cpp"
 #ifdef TEST_HASH
 // #include "random_test/hash/random_test.hpp"
 #include "unit_test/hash/unit_test.hpp"
@@ -54,24 +54,39 @@ int main(int argc, char *argv[]) {
   // } else {
   //   printTestCase();
   // }
-  string name = "layer01";
-  ReLU layer;
-  stringstream output, expect;
-
+  string name = "heap45";
+  stringstream output;
   //! data ------------------------------------
-  xt::xarray<double> X = {{-1.0, 0.0}, {0.0, 1.0}};
-  xt::xarray<double> DY = {{0.1, 0.2}, {0.0, 1.1}};
-
-  xt::xarray<double> output_forward = layer.forward(X);
-  xt::xarray<double> output_backward = layer.backward(DY);
+  Heap<int *> heap(minHeapComparator);
+  int a = 5;
+  int b = 6;
+  int c = 7;
+  int d = 8;
+  heap.push(&a);
+  heap.push(&b);
+  heap.push(&c);
+  cout << heap.toString() << endl;
+  heap = heap;
+  cout << heap.toString() << endl;
+  output << heap.contains(&a);
+  heap.remove(&b);
 
   //! expect ----------------------------------
-  xt::xarray<double> expect_forward = {{0., 0.}, {0., 1.}};
-  xt::xarray<double> expect_backward = {{0., 0.2}, {0., 1.1}};
-  expect << expect_forward << endl << expect_backward;
+  string expect =
+      "1size=2;empty=0;[5,7]";
 
   //! output ----------------------------------
-  output << output_forward << endl << output_backward;
+  output << "size=" << heap.size() << ";empty=" << heap.empty() << ";"
+         << heap.toString(&strInt);
+
+  cout << "output: " << output.str() << endl;
+  cout << "expect: " << expect << endl;
+  if (output.str() == expect) {
+    cout << GREEN << BOLD << "PASS" << RESET << endl;
+  } else {
+    cout << RED << BOLD << "FAIL" << RESET << endl;
+  }
+  return 0;
 }
 
 #ifdef TEST_HASH

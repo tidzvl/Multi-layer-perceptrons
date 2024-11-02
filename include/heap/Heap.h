@@ -171,7 +171,7 @@ Heap<T>::Heap(int (*comparator)(T&, T&), void (*deleteUserData)(Heap<T>*)) {
 template <class T>
 Heap<T>::Heap(const Heap<T>& heap) {
   // YOUR CODE IS HERE
-  removeInternalData();
+  // removeInternalData();
   copyFrom(heap);
 }
 
@@ -217,7 +217,7 @@ void Heap<T>::push(T item) {  // item  = 25
 template <class T>
 T Heap<T>::pop() {
   // YOUR CODE IS HERE
-  if(this->count == 0) throw std::underflow_error("Calling peek with an empty heap.");
+  if(this->count == 0) throw std::underflow_error("Calling to peek with the empty heap.");
   T item = this->elements[0];
   this->elements[0] = this->elements[this->count - 1];
   this->count--;
@@ -239,7 +239,7 @@ T Heap<T>::pop() {
 template <class T>
 const T Heap<T>::peek() {
   // YOUR CODE IS HERE
-  if(this->count == 0) throw std::underflow_error("Calling peek with an empty heap.");
+  if(this->count == 0) throw std::underflow_error("Calling to peek with the empty heap.");
   return this->elements[0];
 }
 
@@ -248,7 +248,7 @@ void Heap<T>::remove(T item, void (*removeItemData)(T)) {
   // YOUR CODE IS HERE
   int index = this->getItem(item);
   if(index == -1) return;
-  if(removeItemData != 0) removeItemData(item);
+  if(removeItemData != nullptr) removeItemData(this->elements[index]);
   this->elements[index] = this->elements[this->count - 1];
   this->count--;
   this->reheapDown(index);
@@ -385,6 +385,7 @@ void Heap<T>::removeInternalData() {
 
 template <class T>
 void Heap<T>::copyFrom(const Heap<T>& heap) {
+  if(this == &heap) return;
   capacity = heap.capacity;
   count = heap.count;
   elements = new T[capacity];

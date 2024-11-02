@@ -3,9 +3,11 @@
 
 #include "hash/xMap.h"
 #include "library.hpp"
-class UNIT_TEST_Hash {
- public:
-  UNIT_TEST_Hash() {
+class UNIT_TEST_Hash
+{
+public:
+  UNIT_TEST_Hash()
+  {
     // TODO unit test new
     registerTest("hash01", &UNIT_TEST_Hash::hash01);
     registerTest("hash02", &UNIT_TEST_Hash::hash02);
@@ -37,9 +39,29 @@ class UNIT_TEST_Hash {
     registerTest("hash28", &UNIT_TEST_Hash::hash28);
     registerTest("hash29", &UNIT_TEST_Hash::hash29);
     registerTest("hash30", &UNIT_TEST_Hash::hash30);
+    registerTest("hash31", &UNIT_TEST_Hash::hash31);
+    registerTest("hash32", &UNIT_TEST_Hash::hash32);
+    registerTest("hash33", &UNIT_TEST_Hash::hash33);
+    registerTest("hash34", &UNIT_TEST_Hash::hash34);
+    registerTest("hash35", &UNIT_TEST_Hash::hash35);
+    registerTest("hash36", &UNIT_TEST_Hash::hash36);
+    registerTest("hash37", &UNIT_TEST_Hash::hash37);
+    registerTest("hash38", &UNIT_TEST_Hash::hash38);
+    registerTest("hash39", &UNIT_TEST_Hash::hash39);
+    registerTest("hash40", &UNIT_TEST_Hash::hash40);
+    registerTest("hash41", &UNIT_TEST_Hash::hash41);
+    registerTest("hash42", &UNIT_TEST_Hash::hash42);
+    registerTest("hash43", &UNIT_TEST_Hash::hash43);
+    registerTest("hash44", &UNIT_TEST_Hash::hash44);
+    registerTest("hash45", &UNIT_TEST_Hash::hash45);
+    registerTest("hash46", &UNIT_TEST_Hash::hash46);
+    registerTest("hash47", &UNIT_TEST_Hash::hash47);
+    registerTest("hash48", &UNIT_TEST_Hash::hash48);
+    registerTest("hash49", &UNIT_TEST_Hash::hash49);
+    registerTest("hash50", &UNIT_TEST_Hash::hash50);
   }
 
- private:
+private:
   // TODO unit test new
   bool hash01();
   bool hash02();
@@ -71,22 +93,46 @@ class UNIT_TEST_Hash {
   bool hash28();
   bool hash29();
   bool hash30();
-
- public:
+  bool hash31();
+  bool hash32();
+  bool hash33();
+  bool hash34();
+  bool hash35();
+  bool hash36();
+  bool hash37();
+  bool hash38();
+  bool hash39();
+  bool hash40();
+  bool hash41();
+  bool hash42();
+  bool hash43();
+  bool hash44();
+  bool hash45();
+  bool hash46();
+  bool hash47();
+  bool hash48();
+  bool hash49();
+  bool hash50();
+public:
   static map<string, bool (UNIT_TEST_Hash::*)()> TESTS;
   // ANSI escape codes for colors
   const string green = "\033[32m";
   const string red = "\033[31m";
   const string cyan = "\033[36m";
-  const string reset = "\033[0m";  // To reset to default color
+  const string reset = "\033[0m"; // To reset to default color
 
   // print result test case
-  bool printResult(string output, string expect, string name) {
-    if (expect == output) {
+  bool printResult(string output, string expect, string name)
+  {
+    if (expect == output)
+    {
+
       cout << green << "test " + name + " --------------- PASS" << reset
            << "\n";
       return true;
-    } else {
+    }
+    else
+    {
       cout << red << "test " + name + " --------------- FAIL" << reset << "\n";
       cout << "\texpect : " << expect << endl;
       cout << "\toutput : " << output << endl;
@@ -94,28 +140,38 @@ class UNIT_TEST_Hash {
     }
   }
   // run 1 test case
-  void runTest(const std::string &name) {
+  void runTest(const std::string &name)
+  {
     auto it = TESTS.find(name);
-    if (it != TESTS.end()) {
+    if (it != TESTS.end())
+    {
       (this->*(it->second))();
-    } else {
+    }
+    else
+    {
       throw std::runtime_error("Test with name '" + name + "' does not exist.");
     }
   }
   // run all test case
-  void runAllTests() {
+  void runAllTests()
+  {
     vector<string> fails;
-    for (const auto &test : TESTS) {
-      if (!(this->*(test.second))()) {
+    for (const auto &test : TESTS)
+    {
+      if (!(this->*(test.second))())
+      {
         fails.push_back(test.first);
       }
     }
 
     cout << cyan << "\nResult -------------------------" << reset << endl;
     // Print the results
-    if (fails.empty()) {
+    if (fails.empty())
+    {
       cout << green << "All tests passed!" << reset << endl;
-    } else {
+    }
+    else
+    {
       int totalTests = TESTS.size();
       int failedTests = fails.size();
       int passedTests = totalTests - failedTests;
@@ -124,18 +180,21 @@ class UNIT_TEST_Hash {
               ? (static_cast<double>(passedTests) / totalTests) * 100.0
               : 0.0;
       cout << red << "Some tests failed:";
-      for (const auto &fail : fails) {
+      for (const auto &fail : fails)
+      {
         cout << "  " << fail;
       }
       cout << cyan << "\nPass rate: " << passRate << "%" << reset << endl;
     }
   }
-  static void registerTest(string name, bool (UNIT_TEST_Hash::*function)()) {
-    if (TESTS.find(name) != TESTS.end()) {
+  static void registerTest(string name, bool (UNIT_TEST_Hash::*function)())
+  {
+    if (TESTS.find(name) != TESTS.end())
+    {
       throw std::runtime_error("Test with name '" + name + "' already exists.");
     }
     TESTS[name] = function;
   }
 };
 
-#endif  // UNIT_TEST_hash_HPP
+#endif // UNIT_TEST_hash_HPP
