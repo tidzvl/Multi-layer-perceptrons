@@ -53,6 +53,10 @@ public:
 
     }
     virtual ~DataLoader(){}
+    //New method: from V2: begin
+    int get_batch_size(){ return batch_size; }
+    int get_sample_count(){ return ptr_dataset->len(); }
+    int get_total_batch(){return int(ptr_dataset->len()/batch_size); }
     
     /////////////////////////////////////////////////////////////////////////
     // The section for supporting the iteration and for-each to DataLoader //

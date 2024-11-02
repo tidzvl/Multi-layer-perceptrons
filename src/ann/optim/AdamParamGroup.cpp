@@ -67,6 +67,11 @@ void AdamParamGroup::register_param(string param_name,
         xt::xarray<double>* ptr_param,
         xt::xarray<double>* ptr_grad){
     //YOUR CODE IS HERE
+    m_pParams->put(param_name, ptr_param);
+    m_pGrads->put(param_name, ptr_grad);
+    m_pFirstMomment->put(param_name, new xt::xarray<double>(xt::zeros<double>(ptr_param->shape())));
+    m_pSecondMomment->put(param_name, new xt::xarray<double>(xt::zeros<double>(ptr_param->shape())));
+
 }
 void AdamParamGroup::register_sample_count(unsigned long long* pCounter){
     m_pCounter = pCounter;
@@ -74,11 +79,30 @@ void AdamParamGroup::register_sample_count(unsigned long long* pCounter){
 
 void AdamParamGroup::zero_grad(){
     //YOUR CODE IS HERE
+    DLinkedList<string> keys = m_pGrads->keys();
+    for (auto key : keys) {
+        // cout << key << endl;
+        xt::xarray<double>* pGrad = m_pGrads->get(key);
+        cout << "ASdas"<<endl;
+        *pGrad = xt::zeros<double>(pGrad->shape());
+    }
 }
 
 void AdamParamGroup::step(double lr){
     //YOUR CODE IS HERE
-    
+    DLinkedList<string> keys = m_pParams->keys();
+    for (auto key : keys) {
+        // cout << key << endl;
+        xt::xarray<double>& param = *m_pParams->get(key);
+        xt::xarray<double>& grad = *m_pGrads->get(key);
+        xt::xarray<double>& first_moment = *m_pFirstMomment->get(key);
+        xt::xarray<double>& second_moment = *m_pSecondMomment->get(key);
+        // cout << "Asdas" << endl;
+        first_moment = m_beta1_t * first_moment + (1 - m_beta1_t) * grad;
+        second_moment = m_beta2_t * second_moment + (1 - m_beta2_t) * grad * grad;
+        param -= lr * first_moment / (xt::sqrt(second_moment) + 1e-8);
+        // cout << "Asdsad" << endl;
+    }
     //UPDATE step_idx:
     m_step_idx += 1;
     m_beta1_t *= m_beta1;

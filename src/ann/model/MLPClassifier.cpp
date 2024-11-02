@@ -61,6 +61,7 @@ double_tensor MLPClassifier::predict(double_tensor X, bool make_decision) {
 
   // YOUR CODE IS HERE
   double_tensor Y;
+  Y = this->forward(X);
   // RESTORE the previous mode
   this->set_working_mode(old_mode);
 
@@ -89,6 +90,14 @@ double_tensor MLPClassifier::predict(DataLoader<double, double>* pLoader,
   unsigned long long nsamples = 0;
   for (auto batch : *pLoader) {
     // YOUR CODE IS HERE
+    double_tensor data = batch.getData();
+    double_tensor Y = this->forward(data);
+    if (first_batch) {
+      results = Y;
+      first_batch = false;
+    } else results += Y;  
+    nsamples += data.shape()[0];
+    batch_idx++;
   }
   cout << "Prediction: End" << endl;
 
@@ -109,7 +118,17 @@ double_tensor MLPClassifier::evaluate(DataLoader<double, double>* pLoader) {
   meter.reset_metrics();
 
   // YOUR CODE IS HERE
+  for(auto batch : *pLoader){
+    double_tensor data = batch.getData();
+    double_tensor t = batch.getLabel();
+    double_tensor Y = this->forward(data);
+    double_tensor y_true = xt::argmax(t, -1);
+    double_tensor y_pred = xt::argmax(Y, -1);
+    meter.accumulate(y_true, y_pred);
+  }
+
   double_tensor metrics;
+  metrics = meter.get_metrics();
   //
   this->set_working_mode(old_mode);
   return metrics;
@@ -142,9 +161,17 @@ void MLPClassifier::set_working_mode(bool trainable) {
 // protected: for the training mode: begin
 double_tensor MLPClassifier::forward(double_tensor X) {
   // YOUR CODE IS HERE
+  for (auto pLayer : m_layers) {
+    X = pLayer->forward(X);
+  }
+  return X;
 }
 void MLPClassifier::backward() {
   // YOUR CODE IS HERE
+  xt::xarray<double> DY = m_pLossLayer->backward();
+  for (auto it = m_layers.bbegin(); it != m_layers.bend(); --it) {
+      DY = (*it)->backward(DY);
+  }
 }
 // protected: for the training mode: end
 

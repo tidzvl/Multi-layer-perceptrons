@@ -144,9 +144,30 @@ FCLayer::~FCLayer() {
 
 xt::xarray<double> FCLayer::forward(xt::xarray<double> X) {
     //YOUR CODE IS HERE
+    if(m_trainable){
+        m_aCached_X = X;
+    }
+    xt::xarray<double> Y = xt::linalg::dot(X, xt::transpose(m_aWeights));
+    if (m_bUse_Bias) {
+        Y += m_aBias;
+    }
+
+    return Y;
 }
 xt::xarray<double> FCLayer::backward(xt::xarray<double> DY) {
     //YOUR CODE IS HERE
+    m_unSample_Counter += DY.shape(0);
+    xt::xarray<double> DW = xt::mean(xt::linalg::dot(DY, xt::transpose(m_aCached_X)), 0);
+    xt::xarray<double> Db = xt::mean(DY, 0);
+
+    // m_aWeights -= m_fLearningRate * DW;
+    // m_aBias -= m_fLearningRate * Db;
+    m_aWeights -= DW;
+    m_aBias -= Db;
+    
+    xt::xarray<double> DX = xt::linalg::dot(DY, xt::transpose(m_aWeights));
+    
+    return DX;
 }
 
 int FCLayer::register_params(IParamGroup* ptr_group){

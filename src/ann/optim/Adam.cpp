@@ -26,5 +26,8 @@ Adam::~Adam() {
 
 IParamGroup* Adam::create_group(string name){
     //YOUR CODE IS HERE
+    AdamParamGroup* group = new AdamParamGroup(m_beta_1, m_beta_2);
+    // m_pGroupMap.put(name, group);
+    return group;
 }
 
