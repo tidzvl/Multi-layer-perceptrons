@@ -31,8 +31,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "f:/DSA2/ASS2/template",
-      "program": "f:/DSA2/ASS2/template/build/Debug/outDebug",
+      "cwd": "f:/DSA2/ASS2/Multi-layer-perceptrons",
+      "program": "f:/DSA2/ASS2/Multi-layer-perceptrons/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

@@ -17,6 +17,7 @@
 
 #include "main.hpp"
 #include "test\unit_test\heap\unit_test.cpp"
+#include "test\unit_test\hash\unit_test.cpp"
 #ifdef TEST_HASH
 // #include "random_test/hash/random_test.hpp"
 #include "unit_test/hash/unit_test.hpp"
@@ -54,30 +55,46 @@ int main(int argc, char *argv[]) {
   // } else {
   //   printTestCase();
   // }
-  string name = "heap45";
-  stringstream output;
+  string name = "hash38";
   //! data ------------------------------------
-  Heap<int *> heap(minHeapComparator);
-  int a = 5;
-  int b = 6;
-  int c = 7;
-  int d = 8;
-  heap.push(&a);
-  heap.push(&b);
-  heap.push(&c);
-  cout << heap.toString() << endl;
-  heap = heap;
-  cout << heap.toString() << endl;
-  output << heap.contains(&a);
-  heap.remove(&b);
+
+  xMap<string, int *> hash(&String_keyHash, 0.2, &newINT_EQ, xMap<string, int *>::freeValue, nullptr, nullptr);
+
+  hash.put("key1", new int(0));
+  hash.put("key2", new int(0));
+  hash.put("key3", new int(0));
+  hash.put("key4", new int(0));
+  hash.put("key5", new int(9));
+  hash.put("key6", new int(0));
+  hash.put("key7", new int(0));
+  hash.put("key8", new int(12));
+  hash.put("key9", new int(0));
+  hash.put("key10", new int(0));
+  hash.put("key11", new int(10));
+  hash.put("key12", new int(0));
+
+  //! hash2
+  cout << hash.toString() << endl;
+  xMap<string, int *> hash2 = hash;
+  cout << hash2.toString() << endl;
+  //! operator =
+  hash2 = hash2;
+  cout << hash2.toString() << endl;
 
   //! expect ----------------------------------
-  string expect =
-      "1size=2;empty=0;[5,7]";
+  string expect = "1\n1\n1\n0\nsize : 12\n";
 
   //! output ----------------------------------
-  output << "size=" << heap.size() << ";empty=" << heap.empty() << ";"
-         << heap.toString(&strInt);
+  stringstream output;
+  output << hash2.containsKey("key1") << endl;
+  output << hash2.containsKey("key12") << endl;
+  int *tmp = new int(10);
+  int *tmp1 = new int(-1);
+  output << hash2.containsValue(tmp) << endl;
+  output << hash2.containsValue(tmp1) << endl;
+  output << "size : " << hash2.size() << endl;
+  delete tmp;
+  delete tmp1;
 
   cout << "output: " << output.str() << endl;
   cout << "expect: " << expect << endl;

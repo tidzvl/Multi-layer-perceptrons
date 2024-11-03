@@ -211,21 +211,23 @@ xMap<K, V>::xMap(int (*hashCode)(K&, int), float loadFactor,
 template <class K, class V>
 xMap<K, V>::xMap(const xMap<K, V>& map) {
   // TODO YOUR CODE IS HERE
-  copyMapFrom(map);
+  this->copyMapFrom(map);
 }
 
 template <class K, class V>
 xMap<K, V>& xMap<K, V>::operator=(const xMap<K, V>& map) {
   // TODO YOUR CODE IS HERE
-  removeInternalData();
-  copyMapFrom(map);
+  if(this == &map) return *this;
+
+  this->removeInternalData();
+  this->copyMapFrom(map);
   return *this;
 }
 
 template <class K, class V>
 xMap<K, V>::~xMap() {
   // TODO YOUR CODE IS HERE
-  removeInternalData();
+  this->removeInternalData();
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -240,11 +242,13 @@ V xMap<K, V>::put(K key, V value) {
   // cout << "Key: " << key << endl;
   // cout << "index: " << index << endl;
   DLinkedList<Entry*> &list = this->table[index];
-  for (auto pEntry : list) {
-    if (keyEQ(pEntry->key, key)) {
-      V retValue = pEntry->value;
-      pEntry->value = value;
-      return retValue;
+  if(!list.empty()) {
+    for (auto pEntry : list) {
+      if (keyEQ(pEntry->key, key)) {
+        retValue = pEntry->value;
+        pEntry->value = value;
+        return retValue;
+      }
     }
   }
 
@@ -343,9 +347,11 @@ bool xMap<K, V>::containsKey(K key) {
   int index = hashCode(key, capacity);
   // TODO YOUR CODE IS HERE
   DLinkedList<Entry*> &list = this->table[index];
-  for (auto pEntry : list) {
-    if (keyEQ(pEntry->key, key)) {
-      return true;
+  if(!list.empty()) {
+    for (auto pEntry : list) {
+      if (keyEQ(pEntry->key, key)) {
+        return true;
+      }
     }
   }
   return false;
@@ -354,11 +360,12 @@ bool xMap<K, V>::containsKey(K key) {
 template <class K, class V>
 bool xMap<K, V>::containsValue(V value) {
   // TODO YOUR CODE IS HERE
-  for(size_t i = 0; i < capacity; i++) {
+  for(size_t i = 0; i < this->capacity; i++) {
     DLinkedList<Entry*> &list = this->table[i];
     if(!list.empty()) {
       for (auto pEntry : list) {
-        if (valueEQ(pEntry->value, value)) {
+        // cout << pEntry->value << " and " << value << endl;
+        if (valueEQ(pEntry->value, value) || pEntry->value == value) {
           return true;
         }
       }
@@ -380,7 +387,7 @@ int xMap<K, V>::size() {
 template <class K, class V>
 void xMap<K, V>::clear() {
   // TODO YOUR CODE IS HERE
-  // removeInternalData();
+  this->removeInternalData();
   this->capacity = 10;
   this->count = 0;
   this->table = new DLinkedList<Entry*>[this->capacity];
@@ -392,8 +399,10 @@ DLinkedList<K> xMap<K, V>::keys() {
   DLinkedList <K> output;
   for(size_t i = 0; i < capacity; i++) {
     DLinkedList<Entry*> &list = this->table[i];
-    for (auto pEntry : list) {
-      output.add(pEntry->key);
+    if(!list.empty()) {
+      for (auto pEntry : list) {
+        output.add(pEntry->key);
+      }
     }
   }
   return output;
@@ -405,8 +414,10 @@ DLinkedList<V> xMap<K, V>::values() {
   DLinkedList <V> output;
   for(size_t i = 0; i < capacity; i++) {
     DLinkedList<Entry*> &list = this->table[i];
-    for (auto pEntry : list) {
-      output.add(pEntry->value);
+    if(!list.empty()) {
+      for (auto pEntry : list) {
+        output.add(pEntry->value);
+      }
     }
   }
 
@@ -437,7 +448,7 @@ string xMap<K, V>::toString(string (*key2str)(K&), string (*value2str)(V&)) {
     DLinkedList<Entry*> list = table[idx];
     os << setw(4) << left << idx << ": ";
     stringstream itemos;
-    for (auto &pEntry : list) {
+    for (auto pEntry : list) {
       itemos << " (";
       if (key2str != 0)
         itemos << key2str(pEntry->key);
@@ -571,21 +582,22 @@ void xMap<K, V>::copyMapFrom(const xMap<K, V>& map) {
 
   // this->capacity = map.capacity;
   this->capacity = 10;
-  this->loadFactor = map.loadFactor;
   this->count = 0;
+  this->table = new DLinkedList<Entry*>[this->capacity];
+  this->loadFactor = map.loadFactor;
   this->hashCode = map.hashCode;
   this->keyEqual = map.keyEqual;
+  this->valueEqual = map.valueEqual;
   // cout << "---Before coppy---" << endl;
   // cout << "this " << this->capacity << endl;
   // cout << "map " << map.capacity << endl;
   
-  this->table = new DLinkedList<Entry*>[this->capacity];
   // SHOULD NOT COPY: deleteKeys, deleteValues => delete ONLY TIME in map if
   // needed
   // copy entries
   for (int idx = 0; idx < map.capacity; idx++) {
-    DLinkedList<Entry*>& list = map.table[idx];
-    for (auto pEntry : list) {
+    // DLinkedList<Entry*>& list = map.table[idx];
+    for (auto pEntry : map.table[idx]) {
       this->put(pEntry->key, pEntry->value);
       // cout << this->capacity << endl;
     }
