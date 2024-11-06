@@ -157,15 +157,16 @@ xt::xarray<double> FCLayer::forward(xt::xarray<double> X) {
 xt::xarray<double> FCLayer::backward(xt::xarray<double> DY) {
     //YOUR CODE IS HERE
     m_unSample_Counter += DY.shape(0);
+    m_aGrad_W = xt::sum(outer_stack(DY, m_aCached_X), 0);
     xt::xarray<double> DW = xt::mean(xt::linalg::dot(DY, xt::transpose(m_aCached_X)), 0);
-    xt::xarray<double> Db = xt::mean(DY, 0);
+    if(m_bUse_Bias) m_aGrad_b = xt::sum(DY, 0);
 
     // m_aWeights -= m_fLearningRate * DW;
     // m_aBias -= m_fLearningRate * Db;
-    m_aWeights -= DW;
-    m_aBias -= Db;
+    // m_aWeights -= DW;
+    // m_aBias -= Db;
     
-    xt::xarray<double> DX = xt::linalg::dot(DY, xt::transpose(m_aWeights));
+    xt::xarray<double> DX = xt::linalg::tensordot(DY, m_aWeights, 1);
     
     return DX;
 }

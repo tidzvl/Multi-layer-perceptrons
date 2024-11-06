@@ -37,6 +37,7 @@ xt::xarray<double> Softmax::forward(xt::xarray<double> X) {
   xt::xarray<double> sumExpX = xt::sum(expX, m_nAxis);
   m_aCached_Y = expX / sumExpX;
   return m_aCached_Y;
+
 }
 
 xt::xarray<double> Softmax::backward(xt::xarray<double> DY) {
