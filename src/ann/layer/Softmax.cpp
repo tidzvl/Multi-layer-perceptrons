@@ -33,18 +33,47 @@ Softmax::~Softmax() {}
 
 xt::xarray<double> Softmax::forward(xt::xarray<double> X) {
   // Todo CODE YOUR
-  xt::xarray<double> expX = xt::exp(X);
-  xt::xarray<double> sumExpX = xt::sum(expX, m_nAxis);
-  m_aCached_Y = expX / sumExpX;
-  return m_aCached_Y;
+  // xt::xarray<double> expX = xt::exp(X);
+  // xt::xarray<double> sumExpX = xt::sum(expX, m_nAxis);
+  // m_aCached_Y = expX / sumExpX;
+  // return m_aCached_Y;
+  xt::xarray<double> Z = xt::zeros_like(X);
+
+    for (size_t i = 0; i < X.shape()[0]; ++i) {
+        auto maxX = xt::amax(xt::view(X, i, xt::all())); 
+        auto expX = xt::exp(xt::view(X, i, xt::all()) - maxX);
+
+        auto sumExpX = xt::sum(expX);
+
+        xt::view(Z, i, xt::all()) = expX / sumExpX;
+    }
+
+    m_aCached_Y = Z;
+    return m_aCached_Y;
 
 }
 
+// xt::xarray<double> Softmax::backward(xt::xarray<double> DY) {
+//   // Todo CODE YOUR
+//   xt::xarray<double> DZ = xt::zeros_like(DY);
+//   // xt::xarray<double> sumGradient = xt::sum(gradient, m_nAxis);
+
+//   xt::xarray<double> stack = diag_stack(m_aCached_Y) - outer_stack(m_aCached_Y, m_aCached_Y);
+//   DZ = matmul_on_stack(stack, DY);
+//   return DZ;
+// }
+
 xt::xarray<double> Softmax::backward(xt::xarray<double> DY) {
-  // Todo CODE YOUR
-  xt::xarray<double> gradient = DY * m_aCached_Y;
-  xt::xarray<double> sumGradient = xt::sum(gradient, m_nAxis);
-  return gradient - m_aCached_Y * sumGradient;
+    xt::xarray<double> Dz = xt::zeros_like(DY);
+    xt::xarray<double> diagY_stack = diag_stack(m_aCached_Y);
+
+    xt::xarray<double> outerY_stack = outer_stack(m_aCached_Y, m_aCached_Y);
+
+    xt::xarray<double> js = diagY_stack - outerY_stack;
+
+    Dz = matmul_on_stack(js, DY);
+
+    return Dz;
 }
 
 string Softmax::get_desc() {
