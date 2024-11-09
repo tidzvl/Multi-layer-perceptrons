@@ -55,54 +55,23 @@ int main(int argc, char *argv[]) {
   // } else {
   //   printTestCase();
   // }
-  string name = "hash38";
-  //! data ------------------------------------
-
-  xMap<string, int *> hash(&String_keyHash, 0.2, &newINT_EQ, xMap<string, int *>::freeValue, nullptr, nullptr);
-
-  hash.put("key1", new int(0));
-  hash.put("key2", new int(0));
-  hash.put("key3", new int(0));
-  hash.put("key4", new int(0));
-  hash.put("key5", new int(9));
-  hash.put("key6", new int(0));
-  hash.put("key7", new int(0));
-  hash.put("key8", new int(12));
-  hash.put("key9", new int(0));
-  hash.put("key10", new int(0));
-  hash.put("key11", new int(10));
-  hash.put("key12", new int(0));
-
-  //! hash2
-  cout << hash.toString() << endl;
-  xMap<string, int *> hash2 = hash;
-  cout << hash2.toString() << endl;
-  //! operator =
-  hash2 = hash2;
-  cout << hash2.toString() << endl;
-
-  //! expect ----------------------------------
-  string expect = "1\n1\n1\n0\nsize : 12\n";
-
-  //! output ----------------------------------
-  stringstream output;
-  output << hash2.containsKey("key1") << endl;
-  output << hash2.containsKey("key12") << endl;
-  int *tmp = new int(10);
-  int *tmp1 = new int(-1);
-  output << hash2.containsValue(tmp) << endl;
-  output << hash2.containsValue(tmp1) << endl;
-  output << "size : " << hash2.size() << endl;
-  delete tmp;
-  delete tmp1;
-
-  cout << "output: " << output.str() << endl;
-  cout << "expect: " << expect << endl;
-  if (output.str() == expect) {
-    cout << GREEN << BOLD << "PASS" << RESET << endl;
-  } else {
-    cout << RED << BOLD << "FAIL" << RESET << endl;
-  }
+  int array[] = {50, 20, 15, 10, 8, 6, 7, 23}; 
+  //min heap: [6, 10, 7, 23, 15, 20, 8, 50]
+  //max heap: [50, 23, 15, 20, 8, 6, 7, 10]
+  Heap<int> minHeap1;
+  cout << "Min Heap: ";
+  minHeap1.heapify(array, 8);
+  cout << minHeap1.toString() << endl;
+  
+  Heap<int> minHeap2(minHeapComparator);
+  cout << "Min Heap: ";
+  minHeap2.heapify(array, 8);
+  cout << minHeap2.toString() << endl;
+  
+  Heap<int> maxHeap(maxHeapComparator);
+  cout << "Max Heap: ";
+  maxHeap.heapify(array, 8);
+  cout << maxHeap.toString() << endl;
   return 0;
 }
 

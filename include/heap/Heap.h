@@ -167,6 +167,7 @@ Heap<T>::Heap(int (*comparator)(T&, T&), void (*deleteUserData)(Heap<T>*)) {
   this->count = 0;
   this->elements = new T[this->capacity];
   this->comparator = comparator;
+  this->deleteUserData = deleteUserData;
 }
 template <class T>
 Heap<T>::Heap(const Heap<T>& heap) {
